@@ -52,7 +52,6 @@ async def payment_create(
     reminder_enable: Optional[bool] = False,
     authenticated: bool = Depends(authenticate),
 ):
-    print(currency)
     payload = {
         "amount": amount,
         "currency": currency,
