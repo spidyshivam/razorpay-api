@@ -3,6 +3,7 @@
 from fastapi import FastAPI, HTTPException, Depends
 from typing import Optional
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
+from fastapi.middleware.cors import CORSMiddleware
 import razorpay
 from dotenv import load_dotenv
 import os
@@ -16,6 +17,14 @@ RZP_API_KEY_ID = os.getenv("RZP_API_KEY_ID")
 RZP_API_KEY_SECRET = os.getenv("RZP_API_KEY_SECRET")
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allows all origins
+    allow_credentials=True,
+    allow_methods=["GET", "POST", "PUT", "DELETE"],  # Allows these methods
+    allow_headers=["*"],  # Allows all headers
+)
 
 security = HTTPBasic()
 
