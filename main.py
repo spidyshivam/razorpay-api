@@ -20,6 +20,7 @@ app = FastAPI()
 security = HTTPBasic()
 
 
+
 def authenticate(credentials: HTTPBasicCredentials = Depends(security)):
     if credentials.username != USERNAME or credentials.password != PASSWORD:
         raise HTTPException(status_code=401, detail="Unauthorized")
@@ -35,6 +36,8 @@ async def payment_create(
     name: str,
     email: str,
     contact: str,
+    invoice_number: str,
+    payment_trench: str,
     sms_notification: Optional[bool] = False,
     email_notification: Optional[bool] = False,
     reminder_enable: Optional[bool] = False,
@@ -46,16 +49,20 @@ async def payment_create(
         "currency": currency,
         "accept_partial": False,
         "description": description,
+        "notes": {
+            "invoice_numer": invoice_number,
+            "payment_trench": payment_trench
+            },
         "customer": {
             "name": name,
             "email": email,
-            "contact": contact
+            "contact": contact,
         },
         "notify": {
             "sms": sms_notification,
             "email": email_notification
         },
-        "reminder_enable": reminder_enable
+        "reminder_enable": reminder_enable,
     }
 
     try:
