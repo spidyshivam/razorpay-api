@@ -1,19 +1,12 @@
-# Use an official Python runtime as a parent image
-FROM python:3.9-slim
+FROM python:3.11.3
+ENV PYTHONUNBUFFERED True
 
-# Set the working directory in the container
-WORKDIR /app
+ENV APP_HOME /app
+WORKDIR $APP_HOME
+COPY . ./
 
-# Install dependencies
-COPY requirements.txt /app/
+
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the current directory contents into the container at /app
-COPY . /app/
-
-# Expose port 80 to allow communication to/from server
-EXPOSE 5000
-
-# Run the application
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "5000"]
-
+# As an example here we're running the web service with one worker on uvicorn.
+CMD exec uvicorn main:app --host 0.0.0.0 --port ${PORT} --workers 1
