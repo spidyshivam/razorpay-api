@@ -85,10 +85,6 @@ async def payment_get(authenticated: bool = Depends(authenticate)):
     try:
         payment_links = rz_client.payment_link.all()
         return payment_links
-    except razorpay.errors.BadRequestError as e:
-        raise HTTPException(status_code=400, detail=str(e))
-    except razorpay.errors.NotFoundError as e:
-        raise HTTPException(status_code=404, detail=str(e))
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
@@ -97,10 +93,6 @@ async def payment_get(payment_id: str):
     try:
         payment_link = rz_client.payment_link.fetch(payment_id)
         return payment_link
-    except razorpay.errors.BadRequestError as e:
-        raise HTTPException(status_code=400, detail=str(e))
-    except razorpay.errors.NotFoundError as e:
-        raise HTTPException(status_code=404, detail=str(e))
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
@@ -109,10 +101,6 @@ async def payment_delete( payment_link_id : str, authenticated: bool = Depends(a
     try:
         rz_client.payment_link.cancel(payment_link_id)
         return {"message": "Payment link canceled successfully"}
-    except razorpay.errors.BadRequestError as e:
-        raise HTTPException(status_code=400, detail=str(e))
-    except razorpay.errors.NotFoundError as e:
-        raise HTTPException(status_code=404, detail=str(e))
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
